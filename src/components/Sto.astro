@@ -1,0 +1,41 @@
+---
+import { stoTerms, stoPhone, freeLine } from "../data/site";
+---
+<section id="sto" class="section sto on-field" aria-labelledby="sto-title">
+  <div class="container sto__grid">
+    <div class="sto__head">
+      <h2 id="sto-title">Для СТО та юридичних осіб</h2>
+      <p class="sto__lead">Умови для вашого сервісу розповість менеджер.</p>
+      <div class="sto__calls">
+        <a class="btn btn--secondary" href={stoPhone.href}><span class="num">{stoPhone.display}</span></a>
+        <span class="sto__or">або</span>
+        <a class="btn btn--secondary" href={freeLine.href}><span class="num">{freeLine.display}</span></a>
+      </div>
+    </div>
+    <dl class="sto__terms">
+      {stoTerms.map((t) => (
+        <div><dt>{t.term}</dt><dd>{t.desc}</dd></div>
+      ))}
+    </dl>
+  </div>
+</section>
+
+<style>
+  .sto { background: var(--color-field); color: var(--color-on-field); }
+  .sto__grid { display: grid; gap: var(--space-6); }
+  .sto__head { display: grid; gap: var(--space-4); align-content: start; }
+  .sto__lead { font-size: var(--text-lead); color: var(--color-on-field-muted); }
+  .sto__calls { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-2); }
+  .sto__terms { display: grid; border-top: 1px solid var(--color-text-muted); }
+  .sto__terms div { display: grid; gap: var(--space-1); padding-block: var(--space-4); border-bottom: 1px solid var(--color-text-muted); }
+  .sto__terms dt { font-family: var(--font-display); font-weight: 700; font-size: var(--text-title); line-height: 1.15; }
+  .sto__terms dd { color: var(--color-on-field-muted); }
+  @media (min-width: 60rem) {
+    .sto__grid { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--col-gap); }
+    .sto__head { grid-column: 1 / 6; }
+    .sto__terms { grid-column: 6 / 13; }
+    .sto__terms div { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); align-items: baseline; column-gap: var(--col-gap); padding-block: var(--space-5); }
+  }
+</style>
+
+<style>.sto__or{align-self:center;color:var(--color-on-field-muted);font-size:.9rem}</style>

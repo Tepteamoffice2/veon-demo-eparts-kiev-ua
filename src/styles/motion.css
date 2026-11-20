@@ -1,0 +1,39 @@
+/* Motion from design/concept.md, «Движение». Only transform and opacity.
+   Every hidden starting state is scoped under .js (set in Base.astro), so the page reads fully without scripts,
+   and every effect has a prefers-reduced-motion fallback (end state at once). */
+
+/* 1. Hero fork (390): the vertical fork fades in after load; text and button are visible at once. */
+@media (max-width: 59.99rem) and (prefers-reduced-motion: no-preference) {
+  .js .hero__forkm svg { opacity: 0; animation: motion-fade var(--dur-fade-m) var(--ease-out) 200ms forwards; }
+}
+@keyframes motion-fade { from { opacity: 0; } to { opacity: 1; } }
+
+/* 2. The page's only reveal: the fork in #how. Lines wipe in, stations follow 60 ms apart. */
+@media (prefers-reduced-motion: no-preference) {
+  .js .how__fork .how__step {
+    opacity: 0; transform: translateY(8px);
+    transition: opacity var(--dur-long) var(--ease-out), transform var(--dur-long) var(--ease-out);
+    transition-delay: calc(150ms + var(--i, 0) * 60ms);
+  }
+  .js .how__fork.is-visible .how__step { opacity: 1; transform: none; }
+  .js .how__fork .how__steps::before { transform: scaleY(0); transition: transform var(--dur-fork-m) var(--ease-out); }
+  .js .how__fork.is-visible .how__steps::before { transform: none; }
+  .js .how__fork .how__cover { transform: translateX(0); transition: transform var(--dur-fork-how) var(--ease-out); }
+  .js .how__fork.is-visible .how__cover { transform: translateX(101%); }
+}
+
+/* 3. One floating call button on phones after the first screen (W-R003). Reserved space under it in body. */
+.float-call { display: none; }
+@media (max-width: 59.99rem) {
+  .js body { padding-bottom: calc(var(--control-h) + 2 * var(--space-4)); }
+  .js .float-call {
+    display: inline-flex; position: fixed; z-index: 35;
+    left: var(--gutter); right: var(--gutter); bottom: calc(var(--space-4) + env(safe-area-inset-bottom, 0px));
+    opacity: 0; transform: translateY(12px); visibility: hidden; pointer-events: none;
+    transition: opacity var(--dur-short) var(--ease-out), transform var(--dur-short) var(--ease-out), visibility 0s linear var(--dur-short);
+  }
+  .js .float-call.is-shown { opacity: 1; transform: none; visibility: visible; pointer-events: auto; transition-delay: 0s; }
+}
+@media (max-width: 59.99rem) and (prefers-reduced-motion: reduce) {
+  .js .float-call { transform: none; transition: none; }
+}

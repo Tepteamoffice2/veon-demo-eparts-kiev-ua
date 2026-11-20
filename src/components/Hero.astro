@@ -1,0 +1,135 @@
+---
+// First screen: the offer, the part finder and the fork Оригінал / Аналог converging on the free call.
+import Picker from "./Picker.astro";
+import Icon from "./Icon.astro";
+import { freeLine, hoursShort } from "../data/site";
+---
+<section id="hero" class="hero on-field" aria-labelledby="hero-title" data-rec="W-R001,W-R003,G-R001">
+  <div class="container hero__grid">
+    <div class="hero__head">
+      <h1 id="hero-title" data-rec="SEO-R009">Автозапчастини для іномарок —<span class="hero__br"> оригінал або аналог на вибір</span></h1>
+      <p class="hero__lead">Підбираємо за VIN, авто або номером деталі. Самовивіз у Києві, доставка по Україні.</p>
+    </div>
+
+    <div class="hero__picker"><Picker /></div>
+
+    <div class="hero__fork" aria-hidden="true">
+      <div class="fork__lines">
+        <svg viewBox="0 0 400 200" preserveAspectRatio="none" focusable="false">
+          <path d="M0 64 H40 C72 64 72 22 104 22 H300 C344 22 344 100 300 100 H200" />
+          <path d="M40 64 C72 64 72 100 104 100 H200" />
+          <path d="M200 100 V200" />
+        </svg>
+        <span class="fork__cover"></span>
+      </div>
+      <span class="fork__tag fork__tag--a">Оригінал</span>
+      <span class="fork__tag fork__tag--b">Аналог</span>
+    </div>
+
+    <div class="hero__cta">
+      <a class="btn btn--primary hero__call" href={freeLine.href}>
+        <Icon name="phone" />Подзвонити безкоштовно
+      </a>
+      <p class="hero__phone"><a class="tel num" href={freeLine.href}>{freeLine.display}</a> <span>{freeLine.note}</span></p>
+      <p class="hero__hours">{hoursShort}</p>
+    </div>
+
+    <div class="hero__forkm">
+      <svg viewBox="0 0 100 136" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+        <path d="M5 0 V136" />
+        <path d="M5 12 C5 32 50 20 50 40 V78 C50 98 5 88 5 110" />
+      </svg>
+      <ul class="forkm__opts" aria-label="Варіанти деталі">
+        <li>Оригінал</li>
+        <li>Аналог</li>
+      </ul>
+      <p class="forkm__tel">Різницю пояснить менеджер: <a class="tel num" href={freeLine.href}>{freeLine.display}</a></p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    background: var(--color-field); color: var(--color-on-field);
+    padding-block: var(--space-6) var(--space-7);
+  }
+  .hero__grid {
+    display: grid; gap: var(--space-5);
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "head" "cta" "picker" "forkm";
+  }
+  .hero__head { grid-area: head; display: grid; gap: var(--space-4); }
+  .hero__picker { grid-area: picker; min-width: 0; }
+  .hero__cta { grid-area: cta; display: grid; gap: var(--space-2); justify-items: start; }
+  .hero__fork { display: none; }
+  .hero__forkm { grid-area: forkm; }
+
+  h1 {
+    font-size: var(--text-display); line-height: var(--lh-display); letter-spacing: var(--tracking-display);
+    max-width: 18ch; text-wrap: balance;
+  }
+  .hero__lead { font-size: var(--text-lead); line-height: 1.5; color: var(--color-on-field-muted); max-width: 56rem; }
+
+  .hero__call { width: 100%; }
+  .hero__phone { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-1) var(--space-3); font-size: var(--text-body); }
+  .hero__phone span, .hero__hours { color: var(--color-on-field-muted); font-size: var(--text-small); }
+  .hero__phone .tel { font-size: var(--text-lead); }
+
+  /* mobile fork: vertical, from the finder down to the phone */
+  .hero__forkm { position: relative; height: 176px; margin-top: calc(-1 * var(--space-5)); padding-left: 0; }
+  .hero__forkm svg { position: absolute; inset: 0 0 auto 0; width: 100%; height: 136px; overflow: visible; }
+  .hero__forkm path, .fork__lines path { fill: none; stroke: var(--color-accent); stroke-width: var(--line); vector-effect: non-scaling-stroke; }
+  .forkm__opts li {
+    position: absolute; top: 46px;
+    font-family: var(--font-display); font-weight: 700; font-size: var(--text-title); line-height: 1;
+  }
+  .forkm__opts li:first-child { left: calc(5% + var(--space-3)); }
+  .forkm__opts li:last-child { left: calc(50% + var(--space-3)); }
+  .forkm__tel { position: absolute; left: 0; right: 0; top: 136px; padding-top: var(--space-2); font-size: var(--text-small); color: var(--color-on-field-muted); }
+  .forkm__tel .tel { font-size: var(--text-body); }
+
+  @media (min-width: 40rem) {
+    .hero__call { width: auto; }
+  }
+
+  @media (min-width: 60rem) {
+    .hero { padding-block: var(--space-7); min-height: calc(100svh - var(--header-h)); display: grid; align-content: center; }
+    .hero__grid {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: var(--col-gap); row-gap: 0;
+      grid-template-areas: none;
+      grid-template-rows: auto auto 1fr;
+    }
+    .hero__head { grid-column: 1 / 12; grid-row: 1; padding-bottom: var(--space-6); }
+    .hero__br { display: block; }
+    h1 { max-width: none; }
+    .hero__picker { grid-column: 1 / 9; grid-row: 2 / 4; align-self: start; }
+    .hero__forkm { display: none; }
+
+    .hero__fork {
+      display: block; position: relative;
+      grid-column: 9 / 13; grid-row: 2;
+      height: 200px; margin-left: calc(-1 * var(--col-gap));
+    }
+    .fork__lines { position: absolute; inset: -4px 0 0 0; overflow: hidden; }
+    .fork__lines svg { position: absolute; inset: 4px 0 0 0; width: 100%; height: 200px; overflow: visible; }
+    .fork__cover { position: absolute; inset: 0; background: var(--color-field); transform: translateX(101%); }
+    .fork__tag {
+      position: absolute; left: 27%;
+      font-family: var(--font-display); font-size: var(--text-title); line-height: 1;
+      color: var(--color-on-field);
+    }
+    .fork__tag--a { top: calc(11% - 1.35em); }
+    .fork__tag--b { top: calc(50% - 1.35em); }
+
+    .hero__cta { grid-column: 9 / 13; grid-row: 3; align-content: start; justify-items: stretch; gap: var(--space-3); }
+    .hero__call { width: 100%; }
+    .hero__phone, .hero__hours { padding-left: var(--space-1); }
+  }
+
+  /* motion: fork draws after load; text and button are visible at once */
+  @media (min-width: 60rem) and (prefers-reduced-motion: no-preference) {
+    :global(.js) .fork__cover { transform: translateX(0); animation: fork-wipe var(--dur-fork) var(--ease-out) 150ms forwards; }
+  }
+  @keyframes fork-wipe { from { transform: translateX(0); } to { transform: translateX(101%); } }
+</style>

@@ -1,0 +1,42 @@
+---
+import FutureLink from "./FutureLink.astro";
+import { footerCols, freeLine, address, SOON } from "../data/site";
+---
+<footer class="site-footer" data-rec="S-R004">
+  <div class="container">
+    <div class="site-footer__cols">
+      {footerCols.map((c) => (
+        <div>
+          <h2 class="site-footer__title">{c.title}</h2>
+          <ul>{c.items.map((it) => <li><FutureLink note={SOON} class="future-link--up">{it}</FutureLink></li>)}</ul>
+        </div>
+      ))}
+      <div>
+        <h2 class="site-footer__title">Зв'язок</h2>
+        <ul>
+          <li><a class="tel" href={freeLine.href}>{freeLine.display}</a></li>
+          <li><a class="site-footer__map" href={address.mapHref} target="_blank" rel="noopener">{address.street}, {address.city}<span class="visually-hidden"> (карта, нова вкладка)</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="site-footer__legal">
+      <a href="#top" class="site-footer__logo" aria-label="Eparts, на початок сторінки"><img src="/eparts-logo.svg" alt="Eparts" width="48" height="38" /></a>
+      <p>© ТОВ Eparts, 2007–2026</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer { background: var(--color-surface-2); border-top: 1px solid var(--color-rule); padding-block: var(--space-7) var(--space-6); }
+  .site-footer__cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-6) var(--col-gap); }
+  .site-footer__title { font-family: var(--font-body); font-size: var(--text-small); font-weight: 600; color: var(--color-text-muted); letter-spacing: 0; line-height: 1.3; margin-bottom: var(--space-3); }
+  .site-footer ul { display: grid; gap: var(--space-1); }
+  .site-footer li { min-height: 36px; display: flex; align-items: center; }
+  .site-footer__map { color: var(--color-link); text-underline-offset: 3px; }
+  .site-footer__legal { display: flex; align-items: center; gap: var(--space-4); margin-top: var(--space-7); padding-top: var(--space-5); border-top: 1px solid var(--color-rule); color: var(--color-text-muted); font-size: var(--text-small); }
+  .site-footer__logo { display: block; padding: var(--space-1); border-radius: var(--radius-s); background: var(--color-field); }
+  .site-footer__logo img { width: 48px; }
+  @media (min-width: 60rem) {
+    .site-footer__cols { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  }
+</style>

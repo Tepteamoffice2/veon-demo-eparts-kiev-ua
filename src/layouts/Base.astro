@@ -1,0 +1,44 @@
+---
+import "../styles/tokens.css";
+import "../styles/global.css";
+import "../styles/motion.css";
+
+interface Props { lang: string; title: string; description: string; canonical?: string; jsonLd?: object[]; }
+const { lang, title, description, canonical, jsonLd = [] } = Astro.props;
+---
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <script is:inline>document.documentElement.classList.add("js")</script>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} data-rec="SEO-R005,SEO-R007" />
+    {canonical && <link rel="canonical" href={canonical} data-rec="SEO-R007" />}
+    <meta name="robots" content="noindex" />
+    <meta name="theme-color" content="#1F2421" />
+    <link rel="icon" href="/eparts-logo.svg" type="image/svg+xml" />
+    <link rel="preload" href="/fonts/manrope-var-cyrillic.woff2" as="font" type="font/woff2" crossorigin />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="uk_UA" />
+    <meta property="og:site_name" content="Eparts" />
+    <meta property="og:title" content={title} data-rec="SEO-R010" />
+    <meta property="og:description" content={description} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    {jsonLd.map((d) => <script type="application/ld+json" set:html={JSON.stringify(d)} />)}
+    <slot name="head" />
+  </head>
+  <style is:global>
+    /* Floor 4 at the page shell (also in global.css): no sideways scroll, sticky header keeps working. */
+    html, body { overflow-x: clip; }
+  </style>
+  <body id="top">
+    <a class="skip-link" href="#main">{lang.startsWith("uk") ? "До змісту" : lang.startsWith("ru") ? "К содержанию" : "Skip to content"}</a>
+    <slot name="header" />
+    <main id="main"><slot /></main>
+    <slot name="footer" />
+    <script src="../scripts/reveal.ts"></script>
+  </body>
+</html>

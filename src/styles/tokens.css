@@ -1,0 +1,114 @@
+/* Hallmark · shape: catalogue store with a fork · genre: modern-minimal · theme: custom · job: buy · idea: "Одна деталь, два чесні варіанти: оригінал або аналог, і менеджер, який допоможе обрати" · vibe: "graphite field, paper lists, one green path" · paper: #F4F4F2 · accent: #4E8B62 · display: Arsenal · body: Manrope · hero: counter, graphite field: headline and the three-way part finder on eight columns, the Original/Analogue fork converging on the free-call button on four · nav: sticky graphite slab, logo, six anchors, phone, language, cart · footer: index columns on paper-2 with a legal line · imagery: none, the client logo only · signature: the green fork Оригінал / Аналог that splits and meets again at the manager · axes: light/grotesk-sans/chromatic-green · posture: committed · contrast: pass · fold: pass · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H4 E4 S4 R4 V4 · weakest: imagery, no client photographs exist (W-I019), so type, the fork and the dense lists carry every screen */
+/* Client design tokens from design/concept.md (veon-concept: colors, fonts). */
+
+@font-face {
+  font-family: "Arsenal";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/arsenal-700-cyrillic.woff2") format("woff2");
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: "Arsenal";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/arsenal-700-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Manrope";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("/fonts/manrope-var-cyrillic.woff2") format("woff2");
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: "Manrope";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("/fonts/manrope-var-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+:root {
+  /* colour roles */
+  --color-bg: #F4F4F2;
+  --color-surface-2: #E7E7E4;
+  --color-field: #1F2421;
+  --color-text: #171A18;
+  --color-text-muted: #575955;
+  --color-on-field: #F4F4F2;
+  --color-on-field-muted: #A3A3A3;
+  --color-accent: #4E8B62;
+  --color-on-accent: #0B0D0C;
+  --color-accent-ink: var(--color-on-accent);
+  --color-link: #2E6A45;
+  --color-border: #7C7C78;
+  --color-rule: #D3D3CF;
+  --color-focus: #2E6A45;
+
+  /* type */
+  --font-display: "Arsenal", "Trebuchet MS", system-ui, sans-serif;
+  --font-body: "Manrope", "Segoe UI", system-ui, sans-serif;
+  --text-display: clamp(2.25rem, 1.5rem + 2.9vw, 4.25rem);   /* H1 36 → 68 */
+  --text-section: clamp(1.875rem, 1.45rem + 1.7vw, 2.75rem);  /* H2 30 → 44 */
+  --text-title: clamp(1.375rem, 1.23rem + 0.55vw, 1.625rem);  /* H3 22 → 26 */
+  --text-brand: clamp(1.1875rem, 1.1rem + 0.35vw, 1.375rem);  /* brand set 19 → 22 */
+  --text-figure: clamp(8rem, 18vw, 15rem);                    /* 2007 */
+  --text-lead: clamp(1.125rem, 1.08rem + 0.2vw, 1.25rem);     /* 18 → 20 */
+  --text-body: clamp(1rem, 0.98rem + 0.1vw, 1.0625rem);       /* 16 → 17 */
+  --text-index: clamp(1.0625rem, 1.03rem + 0.15vw, 1.1875rem);/* 17 → 19 */
+  --text-small: 0.875rem;                                     /* 14 */
+  --lh-display: 1.02;
+  --lh-section: 1.08;
+  --tracking-display: -0.015em;
+
+  /* space: 4 · 8 · 12 · 16 · 24 · 40 · 64 · 96 · 144 */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 40px;
+  --space-7: 64px;
+  --space-8: 96px;
+  --space-9: 144px;
+  --section-gap: clamp(64px, 3.5rem + 2.5vw, 96px);
+  --gutter: clamp(20px, 5.5vw, 80px);
+  --col-gap: 16px;
+  --container: 1280px;
+  --space: var(--gutter);
+
+  /* shape */
+  --radius: 6px;
+  --radius-s: 2px;
+  --line: 2px;
+  --header-h: 56px;
+  --control-h: 52px;
+
+  /* motion */
+  --ease-out: cubic-bezier(.2, .7, .2, 1);
+  --ease-in: cubic-bezier(.5, 0, .75, 0);
+  --ease-in-out: cubic-bezier(.65, 0, .35, 1);
+  --dur-micro: 120ms;
+  --dur-tab-panel: 160ms;
+  --dur-short: 220ms;
+  --dur-fade-m: 300ms;
+  --dur-long: 420ms;
+  --dur-fork-m: 500ms;
+  --dur-fork: 600ms;
+  --dur-fork-how: 700ms;
+  --dur: var(--dur-long);
+}
+
+@media (min-width: 60rem) {
+  :root {
+    --header-h: 72px;
+    --col-gap: 24px;
+  }
+}

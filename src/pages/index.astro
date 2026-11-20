@@ -1,0 +1,58 @@
+---
+// Eparts homepage (VEON demo). Structure and copy: design/concept.md, ux/demo-home.md; facts: veon/client.json.
+import Base from "../layouts/Base.astro";
+import Header from "../components/Header.astro";
+import Hero from "../components/Hero.astro";
+import Catalog from "../components/Catalog.astro";
+import Brands from "../components/Brands.astro";
+import How from "../components/How.astro";
+import Delivery from "../components/Delivery.astro";
+import Sto from "../components/Sto.astro";
+import About from "../components/About.astro";
+import Contacts from "../components/Contacts.astro";
+import Footer from "../components/Footer.astro";
+import FloatCall from "../components/FloatCall.astro";
+
+const title = "Автозапчастини для іномарок у Києві — Eparts, з 2007";
+const description = "Оригінальні запчастини й аналоги для іномарок: 49 марок, підбір менеджером за VIN. Самовивіз у Києві, доставка по Україні. 0-800-21-09-82.";
+// Canonical and JSON-LD url only when the public address is set (PUBLIC_SITE_URL → astro `site`); no relative canonical. The demo never links to the current site.
+const siteUrl = Astro.site ? new URL("/", Astro.site).href : "/";
+
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "AutoPartsStore",
+    name: "Eparts",
+    legalName: "ТОВ Eparts",
+    ...(Astro.site ? { url: siteUrl } : {}),
+    ...(Astro.site ? { logo: new URL("/eparts-logo.svg", Astro.site).href } : {}),
+    telephone: "+380800210982",
+    foundingDate: "2007",
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "бул. Вацлава Гавела, 18в, 2 поверх, офіс 65",
+      addressLocality: "Київ",
+      addressCountry: "UA",
+    },
+    openingHoursSpecification: [
+      { "@type": "OpeningHoursSpecification", dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], opens: "09:00", closes: "19:00" },
+      { "@type": "OpeningHoursSpecification", dayOfWeek: "Saturday", opens: "10:00", closes: "15:00" },
+    ],
+    paymentAccepted: "Visa, Mastercard, готівка",
+  },
+  { "@context": "https://schema.org", "@type": "WebSite", name: "Eparts", ...(Astro.site ? { url: siteUrl } : {}), inLanguage: "uk" },
+];
+---
+<Base lang="uk" title={title} description={description} canonical={Astro.site ? siteUrl : undefined} jsonLd={jsonLd}>
+  <Header slot="header" />
+  <Hero />
+  <Catalog />
+  <Brands />
+  <How />
+  <Delivery />
+  <Sto />
+  <About />
+  <Contacts />
+  <Footer slot="footer" />
+  <FloatCall slot="footer" />
+</Base>

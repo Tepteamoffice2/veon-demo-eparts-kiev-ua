@@ -1,0 +1,70 @@
+---
+import Icon from "./Icon.astro";
+import { freeLine, phones, feedbackPhone, address, hours } from "../data/site";
+---
+<section id="contacts" class="section contacts" aria-labelledby="contacts-title">
+  <div class="container contacts__grid">
+    <h2 id="contacts-title" class="contacts__title">Телефони, адреса, графік</h2>
+
+    <div class="contacts__phones">
+      <a class="contacts__free num" href={freeLine.href}>{freeLine.display}</a>
+      <p class="contacts__free-note">{freeLine.note}</p>
+      <ul class="plist">
+        {phones.map((p) => <li><a class="tel" href={p.href}>{p.display}</a><span>{p.label}</span></li>)}
+        <li><a class="tel" href={feedbackPhone.href}>{feedbackPhone.display}</a><span>{feedbackPhone.label}</span></li>
+      </ul>
+    </div>
+
+    <div class="contacts__place">
+      <h3>Офіс і пункт видачі</h3>
+      <address>
+        {address.city}, {address.street},<br />{address.detail}
+      </address>
+      <a class="maplink" href={address.mapHref} target="_blank" rel="noopener">
+        <Icon name="pin" />Відкрити на карті<span class="visually-hidden"> (Google Maps, нова вкладка)</span>
+      </a>
+      <h3 class="contacts__hours-title">Графік</h3>
+      <table class="hours">
+        <caption class="visually-hidden">Графік роботи</caption>
+        <tbody>
+          {hours.map((h) => (
+            <tr><th scope="row">{h.days}</th><td class="num">{h.time}{h.note && <span>{h.note}</span>}</td></tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<style>
+  .contacts { background: var(--color-surface-2); }
+  .contacts__grid { display: grid; gap: var(--space-6); }
+  .contacts__free {
+    display: inline-block; font-weight: 600; font-size: var(--text-section); line-height: 1.1;
+    color: var(--color-text); text-decoration: none; white-space: nowrap;
+    background-image: linear-gradient(var(--color-accent), var(--color-accent));
+    background-size: 100% 3px; background-repeat: no-repeat; background-position: 0 100%;
+    padding-bottom: var(--space-1);
+  }
+  .contacts__free:hover { color: var(--color-link); }
+  .contacts__free-note { margin-top: var(--space-2); color: var(--color-text-muted); }
+  .plist { display: grid; margin-top: var(--space-5); border-top: 1px solid var(--color-rule); }
+  .plist li { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-1) var(--space-4); min-height: 52px; border-bottom: 1px solid var(--color-rule); }
+  .plist .tel { font-size: var(--text-lead); padding-block: var(--space-2); }
+  .plist span { color: var(--color-text-muted); font-size: var(--text-small); }
+  .contacts__place h3 { margin-bottom: var(--space-3); }
+  address { font-style: normal; font-size: var(--text-lead); line-height: 1.5; }
+  .maplink { display: inline-flex; align-items: center; gap: var(--space-2); min-height: 44px; margin-top: var(--space-2); color: var(--color-link); font-weight: 600; text-underline-offset: 3px; }
+  .maplink:hover { text-decoration-thickness: 2px; }
+  .contacts__hours-title { margin-top: var(--space-6); }
+  .hours { border-collapse: collapse; width: 100%; max-width: 30rem; }
+  .hours th, .hours td { text-align: left; padding: var(--space-3) 0; border-bottom: 1px solid var(--color-rule); vertical-align: baseline; }
+  .hours th { font-weight: 600; width: 6rem; }
+  .hours td span { display: block; font-size: var(--text-small); color: var(--color-text-muted); }
+  @media (min-width: 60rem) {
+    .contacts__grid { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--col-gap); }
+    .contacts__title { grid-column: 1 / -1; }
+    .contacts__phones { grid-column: 1 / 7; }
+    .contacts__place { grid-column: 8 / 13; }
+  }
+</style>

@@ -1,0 +1,97 @@
+---
+// Signature: the large fork. The page's only reveal (data-reveal, src/scripts/reveal.ts).
+import Icon from "./Icon.astro";
+import { freeLine } from "../data/site";
+const steps = [
+  { key: "s1", title: "Ваш запит", text: "Авто, VIN або номер деталі — що з цього у вас є." },
+  { key: "s2", title: "Звіряємо", text: "Менеджер звіряє запит з електронним каталогом." },
+  { key: "a", title: "Оригінал", text: "Оригінальна запчастина для вашого авто." },
+  { key: "b", title: "Аналог", text: "Сумісна деталь іншого виробника, зокрема вітчизняного." },
+  { key: "s4", title: "Ви обираєте", text: "Ми відправляємо по Україні або видаємо в Києві." },
+];
+---
+<section id="how" class="section how" aria-labelledby="how-title" data-rec="W-R006,G-R004">
+  <div class="container">
+    <div class="how__head">
+      <h2 id="how-title">Оригінал чи аналог&nbsp;— вирішуєте ви</h2>
+      <a class="btn btn--secondary" href={freeLine.href}><Icon name="phone" />Продиктувати VIN менеджеру</a>
+    </div>
+    <div class="how__fork" data-reveal>
+      <div class="how__lines" aria-hidden="true">
+        <svg viewBox="0 0 1000 100" preserveAspectRatio="none" focusable="false">
+          <path d="M0 0 H1000" />
+          <path d="M420 0 C465 0 455 50 500 50 H690 C730 50 715 0 750 0" />
+        </svg>
+        <span class="how__cover"></span>
+      </div>
+      <ol class="how__steps">
+        {steps.map((s, i) => (
+          <li class={`how__step how__step--${s.key}`} style={`--i:${i}`}>
+            <h3>{s.title}</h3>
+            <p>{s.text}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </div>
+</section>
+
+<style>
+  .how__head { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-5); justify-items: start; margin-bottom: var(--space-6); }
+  .how__head h2 { max-width: 24ch; }
+  .how__fork { position: relative; }
+  .how__lines { display: none; }
+
+  /* phone: a vertical run with the two variants side by side */
+  .how__steps {
+    position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-areas: "s1 s1" "s2 s2" "a b" "s4 s4"; column-gap: var(--space-4);
+  }
+  .how__steps::before {
+    content: ""; position: absolute; left: 5px; top: 6px; bottom: 0; width: var(--line);
+    background: var(--color-accent); transform-origin: top;
+  }
+  .how__step { position: relative; padding: 0 0 var(--space-6) var(--space-6); min-width: 0; }
+  .how__step::before {
+    content: ""; position: absolute; left: 0; top: 6px; width: 12px; height: 12px;
+    border-radius: 50%; background: var(--color-bg); border: var(--line) solid var(--color-accent);
+  }
+  .how__step--s1 { grid-area: s1; } .how__step--s2 { grid-area: s2; }
+  .how__step--a { grid-area: a; } .how__step--b { grid-area: b; padding-left: var(--space-4); }
+  .how__step--s4 { grid-area: s4; padding-bottom: 0; }
+  .how__step--a, .how__step--b { padding-top: var(--space-5); }
+  /* «Аналог» leaves the stem above the pair, runs down its own line and rejoins the stem below it */
+  .how__step--a::before, .how__step--b::before { top: calc(var(--space-5) + 6px); }
+  .how__step--b { padding-left: var(--space-5); }
+  .how__step--b::after {
+    content: ""; position: absolute; top: var(--space-2); bottom: var(--space-4);
+    left: calc(5px - 100% - var(--space-4)); right: calc(100% - 7px);
+    border: var(--line) solid var(--color-accent); border-left: 0; border-radius: 0 16px 16px 0;
+  }
+  .how__step h3 { margin-bottom: var(--space-2); }
+  .how__step p { color: var(--color-text-muted); max-width: 30ch; }
+  .how__step--a h3, .how__step--b h3 { color: var(--color-link); }
+
+  @media (min-width: 60rem) {
+    .how__head { grid-template-columns: minmax(0, 1fr) auto; align-items: end; justify-items: stretch; }
+    .how__head .btn { justify-self: end; }
+    .how__lines { display: block; position: absolute; inset: -6px 0 0 0; overflow: hidden; pointer-events: none; }
+    .how__lines svg { position: absolute; left: 0; right: 0; top: 6px; width: 100%; height: calc(100% - 6px); overflow: visible; }
+    .how__lines path { fill: none; stroke: var(--color-accent); stroke-width: var(--line); vector-effect: non-scaling-stroke; }
+    .how__cover { position: absolute; inset: 0; background: var(--color-bg); transform: translateX(101%); }
+    .how__steps {
+      grid-template-columns: repeat(4, minmax(0, 1fr)); grid-template-rows: 1fr 1fr;
+      grid-template-areas: "s1 s2 a s4" "s1 s2 b s4"; column-gap: 0;
+    }
+    .how__steps::before { display: none; }
+    .how__step, .how__step--b, .how__step--a { padding: var(--space-6) var(--space-5) var(--space-6) 0; }
+    .how__step::before { display: block; top: -6px; left: 0; }
+    .how__step--b::before { display: block; left: 0; top: -6px; }
+    .how__step--b::after { display: none; }
+    .how__step--s4 { padding-right: 0; }
+    .how__step p { max-width: 28ch; }
+  }
+
+  /* the reveal: lines wipe in, stations follow in order */
+  /* the reveal itself lives in styles/motion.css (scoped under .js) */
+</style>

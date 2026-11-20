@@ -1,0 +1,171 @@
+---
+// Part finder with three entries. Tabs switch for real; nothing is sent: the search is a FutureLink,
+// a real call sits next to it (veon-project demo.md §6, W-R001).
+import FutureLink from "./FutureLink.astro";
+import { brands, freeLine, PICKER_SOON } from "../data/site";
+const tabs = [
+  { id: "auto", label: "За авто" },
+  { id: "vin", label: "За VIN" },
+  { id: "num", label: "За номером" },
+];
+---
+<div class="picker" data-picker data-rec="W-R001">
+  <div class="picker__tabs" role="tablist" aria-label="Спосіб підбору деталі">
+    {tabs.map((t, i) => (
+      <button type="button" role="tab" id={`pick-tab-${t.id}`} aria-controls={`pick-panel-${t.id}`}
+        aria-selected={i === 0 ? "true" : "false"} tabindex={i === 0 ? 0 : -1}>{t.label}</button>
+    ))}
+    <span class="picker__ind" aria-hidden="true"></span>
+  </div>
+
+  <div class="picker__panel is-active" role="tabpanel" id="pick-panel-auto" aria-labelledby="pick-tab-auto">
+    <div class="picker__fields picker__fields--auto">
+      <div class="field">
+        <label for="pick-make">Марка</label>
+        <select id="pick-make" name="make">
+          <option value="">Оберіть</option>
+          {brands.map((b) => <option>{b}</option>)}
+        </select>
+      </div>
+      <div class="field">
+        <label for="pick-model">Модель</label>
+        <select id="pick-model" name="model" disabled><option>—</option></select>
+      </div>
+      <div class="field">
+        <label for="pick-year">Рік</label>
+        <select id="pick-year" name="year" disabled><option>—</option></select>
+      </div>
+      <div class="field">
+        <label for="pick-engine">Двигун</label>
+        <select id="pick-engine" name="engine" disabled><option>—</option></select>
+      </div>
+    </div>
+    <p class="picker__hint">Менеджер перевіряє сумісність за VIN перед відправкою.</p>
+  </div>
+
+  <div class="picker__panel" role="tabpanel" id="pick-panel-vin" aria-labelledby="pick-tab-vin">
+    <div class="picker__fields">
+      <div class="field field--wide">
+        <label for="pick-vin">VIN-код авто</label>
+        <input id="pick-vin" name="vin" type="text" inputmode="text" maxlength="17" autocomplete="off"
+          autocapitalize="characters" spellcheck="false" aria-describedby="pick-vin-hint" />
+      </div>
+    </div>
+    <p class="picker__hint" id="pick-vin-hint">17 символів. Літери I, O, Q у VIN не використовуються.</p>
+  </div>
+
+  <div class="picker__panel" role="tabpanel" id="pick-panel-num" aria-labelledby="pick-tab-num">
+    <div class="picker__fields">
+      <div class="field field--wide">
+        <label for="pick-num">Номер деталі</label>
+        <input id="pick-num" name="part" type="text" autocomplete="off" spellcheck="false" aria-describedby="pick-num-hint" />
+      </div>
+    </div>
+    <p class="picker__hint" id="pick-num-hint">Оригінальний номер або номер аналога, звіримо обидва.</p>
+  </div>
+
+  <div class="picker__foot">
+    <FutureLink note={PICKER_SOON} class="future-btn picker__search future-link--up">Знайти деталь</FutureLink>
+    <p class="picker__call">Підберемо по телефону <a class="tel" href={freeLine.href}>{freeLine.display}</a></p>
+  </div>
+</div>
+
+<style>
+  .picker {
+    --color-focus: var(--color-link);
+    position: relative;
+    background: var(--color-bg); color: var(--color-text);
+    border-radius: var(--radius);
+    padding: 0 var(--space-4) var(--space-5);
+  }
+  .picker :global(.on-field) { --color-focus: var(--color-link); }
+  .picker__tabs {
+    position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-inline: calc(-1 * var(--space-4));
+    border-bottom: 1px solid var(--color-rule);
+  }
+  .picker__tabs button {
+    min-height: var(--control-h); padding: 0 var(--space-2);
+    background: none; border: 0; border-radius: var(--radius) var(--radius) 0 0; cursor: pointer;
+    font-weight: 600; color: var(--color-text-muted); white-space: nowrap;
+    transition: color var(--dur-micro) var(--ease-out);
+  }
+  .picker__tabs button[aria-selected="true"] { color: var(--color-text); }
+  .picker__tabs button:hover { color: var(--color-text); }
+  .picker__tabs button:focus-visible { outline-offset: -3px; }
+  .picker__ind {
+    position: absolute; left: 0; bottom: -1px; width: calc(100% / 3); height: 3px;
+    background: var(--color-accent);
+    transform: translateX(calc(var(--tab, 0) * 100%));
+    transition: transform var(--dur-short) var(--ease-in-out);
+  }
+
+  .picker__panel { padding-top: var(--space-5); }
+  :global(.js) .picker__panel:not(.is-active) { display: none; }
+  :global(.js) .picker__panel.is-active { animation: picker-in var(--dur-tab-panel) var(--ease-out); }
+  @keyframes picker-in { from { opacity: 0; } to { opacity: 1; } }
+
+  .picker__fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-3); }
+  .field { display: grid; gap: var(--space-1); min-width: 0; }
+  .field--wide { grid-column: 1 / -1; }
+  .field label { font-size: var(--text-small); font-weight: 600; color: var(--color-text-muted); }
+  .field select, .field input {
+    width: 100%; min-height: var(--control-h); padding: 0 var(--space-3);
+    background: var(--color-bg); color: var(--color-text);
+    border: 1.5px solid var(--color-border); border-radius: var(--radius);
+    font-size: var(--text-body);
+  }
+  .field input { text-transform: none; letter-spacing: 0.02em; font-variant-numeric: tabular-nums; }
+  .field select:hover:not(:disabled), .field input:hover { border-color: var(--color-text); }
+  .field select:focus-visible, .field input:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+  .field select:disabled { background: var(--color-surface-2); color: var(--color-text-muted); border-color: var(--color-border); border-style: dashed; cursor: not-allowed; }
+  .picker__hint { margin-top: var(--space-3); font-size: var(--text-small); color: var(--color-text-muted); }
+
+  .picker__foot {
+    display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3) var(--space-5);
+    margin-top: var(--space-5);
+  }
+  .picker__foot :global(.picker__search) { flex: 1 1 12rem; }
+  .picker__foot :global(.picker__search .future-link__note[aria-hidden="true"]) { background: var(--color-text); color: var(--color-bg); }
+  .picker__call { font-size: var(--text-body); color: var(--color-text-muted); }
+  .picker__call .tel { color: var(--color-link); }
+
+  @media (min-width: 40rem) {
+    .picker { padding: 0 var(--space-5) var(--space-5); }
+    .picker__tabs { margin-inline: calc(-1 * var(--space-5)); }
+    .picker__fields--auto { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .picker__foot :global(.picker__search) { flex: 0 0 auto; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .picker__ind { transition: none; }
+    :global(.js) .picker__panel.is-active { animation: none; }
+  }
+</style>
+
+<script>
+  const root = document.querySelector<HTMLElement>("[data-picker]");
+  if (root) {
+    const tabs = Array.from(root.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
+    const select = (i: number, focus: boolean) => {
+      tabs.forEach((t, j) => {
+        const on = i === j;
+        t.setAttribute("aria-selected", on ? "true" : "false");
+        t.tabIndex = on ? 0 : -1;
+        const panel = document.getElementById(t.getAttribute("aria-controls") ?? "");
+        panel?.classList.toggle("is-active", on);
+      });
+      root.style.setProperty("--tab", String(i));
+      if (focus) tabs[i]?.focus();
+    };
+    tabs.forEach((t, i) => {
+      t.addEventListener("click", () => select(i, false));
+      t.addEventListener("keydown", (e) => {
+        const last = tabs.length - 1;
+        const next = e.key === "ArrowRight" ? (i === last ? 0 : i + 1)
+          : e.key === "ArrowLeft" ? (i === 0 ? last : i - 1)
+          : e.key === "Home" ? 0 : e.key === "End" ? last : -1;
+        if (next >= 0) { e.preventDefault(); select(next, true); }
+      });
+    });
+  }
+</script>

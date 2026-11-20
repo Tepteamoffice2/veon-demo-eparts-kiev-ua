@@ -1,0 +1,64 @@
+---
+import FutureLink from "./FutureLink.astro";
+import { delivery, freeLine, SOON } from "../data/site";
+const rows = [
+  { id: "recv", title: "Отримання", opts: delivery.receive },
+  { id: "pay", title: "Оплата", opts: delivery.pay },
+];
+---
+<section id="delivery" class="section delivery" aria-labelledby="delivery-title" data-rec="W-R006,G-R004">
+  <div class="container">
+    <div class="section__head">
+      <h2 id="delivery-title">Як отримати і як оплатити</h2>
+    </div>
+    <div class="delivery__rows">
+      {rows.map((r) => (
+        <div class="drow">
+          <h3 class="drow__title">{r.title}</h3>
+          <svg class="drow__fork" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+            <path d="M0 50 H30 C52 50 46 25 68 25 H100" />
+            <path d="M30 50 C52 50 46 75 68 75 H100" />
+          </svg>
+          <ul class="drow__opts">
+            {r.opts.map((o) => (
+              <li><strong class="drow__name">{o.title}</strong><p>{o.text}</p></li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+    <div class="delivery__foot">
+      <FutureLink note={SOON} class="future-btn">Умови повернення</FutureLink>
+      <p>Питання про доставку й оплату: <a class="tel" href={freeLine.href}>{freeLine.display}</a></p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .delivery { border-top: 1px solid var(--color-rule); }
+  .delivery__rows { display: grid; }
+  .drow { display: grid; gap: var(--space-4); padding-block: var(--space-5); border-top: 1px solid var(--color-rule); }
+  .drow:last-child { border-bottom: 1px solid var(--color-rule); }
+  .drow__fork { display: none; }
+  .drow__opts { display: grid; gap: var(--space-4); border-left: var(--line) solid var(--color-accent); margin-left: var(--space-1); }
+  .drow__opts li { position: relative; padding-left: var(--space-5); }
+  .drow__opts li::before { content: ""; position: absolute; left: 0; top: 0.8em; width: var(--space-4); height: var(--line); background: var(--color-accent); }
+  .drow__name { display: block; margin: 0 0 var(--space-1); font-weight: 600; font-size: var(--text-lead); }
+  .drow__opts p { color: var(--color-text-muted); max-width: 44ch; }
+  .delivery__foot { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-4) var(--space-6); margin-top: var(--space-6); }
+  .delivery__foot p { color: var(--color-text-muted); max-width: 40rem; }
+
+  @media (min-width: 60rem) {
+    .drow {
+      grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--col-gap); align-items: stretch;
+      padding-block: var(--space-6);
+    }
+    .drow__title { grid-column: 1 / 4; align-self: center; }
+    .drow__fork { display: block; grid-column: 4 / 6; width: calc(100% + var(--col-gap)); height: 100%; overflow: visible; }
+    .drow__fork path { fill: none; stroke: var(--color-accent); stroke-width: 1.5px; vector-effect: non-scaling-stroke; }
+    .drow__opts { grid-column: 6 / 13; grid-template-rows: 1fr 1fr; gap: var(--space-5); border-left: 0; margin-left: 0; }
+    .drow__opts li { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 5fr); column-gap: var(--col-gap); align-items: center; padding-left: var(--space-4); }
+    .drow__opts li::before { display: none; }
+    .drow__name { margin: 0; }
+  }
+</style>

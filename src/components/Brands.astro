@@ -1,0 +1,53 @@
+---
+import FutureLink from "./FutureLink.astro";
+import { brands, SOON } from "../data/site";
+---
+<section id="brands" class="section brands" aria-labelledby="brands-title" data-rec="W-R005">
+  <div class="container">
+    <div class="section__head">
+      <h2 id="brands-title">49 марок&nbsp;— знайдіть свою</h2>
+      <p class="section__lead">Від Acura до Volkswagen. Немає в списку? Запитайте менеджера.</p>
+    </div>
+    <ul class="brands__list" id="brands-list" data-brands>
+      {brands.map((b) => <li><FutureLink note={SOON} class="brand">{b}</FutureLink></li>)}
+    </ul>
+    <button type="button" class="btn btn--secondary brands__more" aria-expanded="false" aria-controls="brands-list" data-brands-toggle>Усі 49 марок</button>
+  </div>
+</section>
+
+<style>
+  .brands { background: var(--color-surface-2); }
+  .brands__list {
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 var(--col-gap);
+    border-top: 1px solid var(--color-rule);
+  }
+  .brands__list li { border-bottom: 1px solid var(--color-rule); min-width: 0; }
+  .brands__list :global(.brand) {
+    display: flex; align-items: center; min-height: 48px; width: 100%;
+    font-family: var(--font-display); font-weight: 700; font-size: var(--text-brand); line-height: 1.1;
+    transition: color var(--dur-micro) var(--ease-out);
+  }
+  @media (hover: hover) { .brands__list :global(.brand:hover) { color: var(--color-link); } }
+  .brands__more { display: none; margin-top: var(--space-5); }
+
+  @media (max-width: 59.99rem) {
+    :global(.js) .brands__more { display: inline-flex; }
+    :global(.js) .brands__list:not(.is-open) li:nth-child(n + 13) { display: none; }
+    :global(.js) .brands__list.is-open li:nth-child(n + 13) { animation: brands-in var(--dur-short) var(--ease-out); }
+  }
+  @keyframes brands-in { from { opacity: 0; } to { opacity: 1; } }
+  @media (min-width: 40rem) { .brands__list { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+  @media (min-width: 60rem) { .brands__list { grid-template-columns: repeat(7, minmax(0, 1fr)); } }
+  @media (prefers-reduced-motion: reduce) { :global(.js) .brands__list.is-open li { animation: none; } }
+</style>
+
+<script>
+  const btn = document.querySelector<HTMLButtonElement>("[data-brands-toggle]");
+  const list = document.querySelector<HTMLElement>("[data-brands]");
+  btn?.addEventListener("click", () => {
+    const open = btn.getAttribute("aria-expanded") !== "true";
+    btn.setAttribute("aria-expanded", String(open));
+    list?.classList.toggle("is-open", open);
+    btn.textContent = open ? "Згорнути список" : "Усі 49 марок";
+  });
+</script>

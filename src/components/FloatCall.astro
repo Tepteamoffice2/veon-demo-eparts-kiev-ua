@@ -1,0 +1,21 @@
+---
+// One floating call button on phones, shown only after the first screen has left the view (W-R003).
+import Icon from "./Icon.astro";
+import { freeLine } from "../data/site";
+---
+<a class="btn btn--primary float-call" href={freeLine.href} data-float-call aria-hidden="true" tabindex="-1">
+  <Icon name="phone" />Подзвонити безкоштовно
+</a>
+
+<script>
+  const btn = document.querySelector<HTMLAnchorElement>("[data-float-call]");
+  const hero = document.getElementById("hero");
+  if (btn && hero && "IntersectionObserver" in window) {
+    new IntersectionObserver(([e]) => {
+      const show = !!e && !e.isIntersecting;
+      btn.classList.toggle("is-shown", show);
+      btn.setAttribute("aria-hidden", show ? "false" : "true");
+      btn.tabIndex = show ? 0 : -1;
+    }).observe(hero);
+  }
+</script>

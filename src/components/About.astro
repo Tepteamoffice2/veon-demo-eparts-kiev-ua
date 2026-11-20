@@ -1,0 +1,39 @@
+---
+const facts = [
+  { title: "Особистий менеджер", text: "За кожним клієнтом закріплений експерт із продажу." },
+  { title: "Оригінал і аналоги", text: "Зокрема деталі вітчизняного виробництва." },
+  { title: "Сертифіковані деталі", text: "Продаємо лише сертифіковані запчастини." },
+];
+---
+<section id="about" class="section about" aria-labelledby="about-title">
+  <div class="container about__grid">
+    <div class="about__head">
+      <h2 id="about-title">Чому Eparts</h2>
+      <p class="about__year num"><span class="visually-hidden">Працюємо з </span>2007</p>
+      <p class="about__cap">працюємо з цього року</p>
+    </div>
+    <ul class="about__facts">
+      {facts.map((f) => <li><h3>{f.title}</h3><p>{f.text}</p></li>)}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .about__grid { display: grid; gap: var(--space-6); }
+  .about__head { display: grid; gap: var(--space-2); min-width: 0; }
+  .about__year {
+    font-family: var(--font-display); font-weight: 700; font-size: var(--text-figure); line-height: 0.85;
+    letter-spacing: -0.03em; color: var(--color-text);
+  }
+  .about__cap { color: var(--color-text-muted); font-size: var(--text-lead); }
+  .about__facts { display: grid; border-top: 1px solid var(--color-rule); align-self: end; }
+  .about__facts li { display: grid; gap: var(--space-1); padding-block: var(--space-4); border-bottom: 1px solid var(--color-rule); }
+  .about__facts p { color: var(--color-text-muted); }
+  @media (min-width: 60rem) {
+    .about__grid { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--col-gap); align-items: end; }
+    .about__head { grid-column: 1 / 7; }
+    .about__cap { color: var(--color-text-muted); font-size: var(--text-lead); }
+  .about__facts { grid-column: 7 / 13; }
+    .about__facts li { padding-block: var(--space-5); }
+  }
+</style>
