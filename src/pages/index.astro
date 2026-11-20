@@ -25,7 +25,7 @@ const jsonLd = [
     name: "Eparts",
     legalName: "ТОВ Eparts",
     ...(Astro.site ? { url: siteUrl } : {}),
-    ...(Astro.site ? { logo: new URL("/eparts-logo.svg", Astro.site).href } : {}),
+    ...(Astro.site ? { logo: new URL(`${import.meta.env.BASE_URL}eparts-logo.svg`, Astro.site).href } : {}),
     telephone: "+380800210982",
     foundingDate: "2007",
     address: {
